@@ -339,6 +339,7 @@ func TestBuildPodTemplateSpec(t *testing.T) {
 					Resources:      DefaultResources,
 					VolumeMounts:   volumeMounts,
 					ReadinessProbe: NewReadinessProbe(),
+					StartupProbe:   NewStartupProbe(),
 					Lifecycle: &corev1.Lifecycle{
 						PreStop: NewPreStopHook(),
 					},

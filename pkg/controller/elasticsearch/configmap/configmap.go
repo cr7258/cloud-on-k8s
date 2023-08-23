@@ -34,7 +34,7 @@ func NewConfigMapWithData(es types.NamespacedName, data map[string]string) corev
 }
 
 // ReconcileScriptsConfigMap reconciles a configmap containing scripts and related configuration used by
-// init containers and readiness probe.
+// init containers, readiness probe and startup probe.
 func ReconcileScriptsConfigMap(ctx context.Context, c k8s.Client, es esv1.Elasticsearch) error {
 	span, ctx := apm.StartSpan(ctx, "reconcile_scripts", tracing.SpanTypeApp)
 	defer span.End()
@@ -53,6 +53,7 @@ func ReconcileScriptsConfigMap(ctx context.Context, c k8s.Client, es esv1.Elasti
 		types.NamespacedName{Namespace: es.Namespace, Name: esv1.ScriptsConfigMap(es.Name)},
 		map[string]string{
 			nodespec.ReadinessProbeScriptConfigKey: nodespec.ReadinessProbeScript,
+			nodespec.StartupProbeScriptConfigKey:   nodespec.StartupProbeScript,
 			nodespec.PreStopHookScriptConfigKey:    preStopScript,
 			initcontainer.PrepareFsScriptConfigKey: fsScript,
 			initcontainer.SuspendScriptConfigKey:   initcontainer.SuspendScript,
